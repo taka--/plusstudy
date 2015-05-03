@@ -59,6 +59,15 @@
 <h2><img src="<?php echo IMG_PATH; ?>seminarcreate_h.png" alt="勉強会作成" width="306" height="109"><span class="hidden">勉強会作成</span></h2>
 <section>
 	<div class="wrapper">
+		<?php if(isset($teachme['TeachMe']['title'])): ?>
+		<div class="teachmetag cf">
+			<img src="<?php echo IMG_PATH; ?>tag_ico.png" alt="">
+			<h4>
+				<?php echo h($teachme['TeachMe']['title']); ?>
+			</h4>
+		</div>
+		<?php endif; ?>
+
 		<?php echo $this->Form->create('Seminar'); ?>
 		<?php echo $this->Form->hidden('seminar_img_id'); ?>
 		<dl>

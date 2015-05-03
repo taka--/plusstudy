@@ -77,7 +77,7 @@ class SeminarsController extends AppController {
 
 		$time = '';						// 一時的な時間変数
 
-
+		$teachme = null;
 
 
 
@@ -218,12 +218,18 @@ class SeminarsController extends AppController {
 			$this->request->data['Seminar']['upper_limit'] = $result['Seminar']['upper_limit'];
 			$this->request->data['Seminar']['place'];
 			$this->request->data['Seminar']['description'] = $result['Seminar']['description'];
+			$this->request->data['Seminar']['teach_me_id'] = $result['Seminar']['teach_me_id'];
 			$smnImgId = $result['Seminar']['seminar_image_id'];
 			$smnImgExt = $result['SeminarImage']['ext'];
 
 			// 説明文
 			$dsc = $result['Seminar']['description'];
 
+			// 指定されたIDを元にニーズ情報を取得
+			if(isset($this->request->data['Seminar']['teach_me_id'])) {
+				$options = array('conditions' => array('TeachMe.' . $this->TeachMe->primaryKey => $result['Seminar']['teach_me_id']));
+				$teachme = $this->TeachMe->find('first', $options);
+			}
 		}
 
 
@@ -274,6 +280,7 @@ class SeminarsController extends AppController {
 				'smnImgExt' => $smnImgExt,
 				'accId' => $this->Session->read('Auth.id'),
 				'smnId' => $seminar_id,
+				'teachme' => $teachme
 			));
 	}
 
