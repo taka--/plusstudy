@@ -1021,6 +1021,7 @@ class SeminarsController extends AppController {
 		$msg = '';
 		$smnId = '';
 		$data = null;
+
 		if (isset($this->request->data['Seminar'])) {
 
 			// セミナー情報取得
@@ -1076,6 +1077,13 @@ class SeminarsController extends AppController {
 			$this->set('seminar', $data);
 		}
 
+		// 参加者がいなかった場合直接中止確認ページへ
+		if (count($data['Participant']) === 0) {
+			$this->Session->write('suspend', $data);
+			$this->redirect(array('action' => 'suspendConfirm'));
+			exit();
+		}
+
 		$this->request->data = $data;
 		$this->set('msg', $msg);
 	}
@@ -1109,41 +1117,40 @@ class SeminarsController extends AppController {
 		$data['Seminar']['suspended'] = 1;
 		$this->Seminar->save($data);
 
-		// 中止処理Session削除
-		$this->Session->delete('suspend');
-
-
-
-
-
+		// 参加者メールアドレスを取得
+		$participants = $this->Participant->find('all', array(
+			'conditions' => array(
+				'Participant.seminar_id' => $this->Session->read('suspend')['Seminar']['id']
+			),
+		));
+		$participantsEmails = array();
+		for ($i=0; $i<count($participants); $i++) {
+			$participantsEmails[] = $participants[$i]['Account']['mailaddress'];
+		}
 
 		//*******************************
 		// 参加者への中止通知メール送信処理
 		//*******************************
-		$email = new CakeEmail('sakura');
-		$email->to($this->Session->read('Auth.email'));
-		// $email->bbc(array(
+		if (count($participantsEmails) > 0) {
+			$email = new CakeEmail('sakura');
+			$email->to($this->Session->read('Auth.email'));
+			$email->bcc($participantsEmails);
+			$email->subject('【重要】勉強会中止のおしらせ');
+			$email->emailFormat('text');
+			$email->template('suspended');
+			$email->viewVars(
+				array(
+					'sem_name' => $this->Session->read('suspend')['Seminar']['name'],
+					'host' => $this->Session->read('suspend')['Account']['last_name'] . $this->Session->read('suspend')['Account']['first_name'],
+					'date' => $this->Session->read('suspend')['Seminar']['start'],
+					'place' => $this->Session->read('suspend')['Seminar']['place'],
+					'suspend_dsc' => $this->Session->read('suspend')['Seminar']['suspend_dsc'],
+				)
+			);
+			$email->send();
+		}
 
-		// ));
-		$email->subject('【重要】勉強会中止のおしらせ');
-		$email->emailFormat('text');
-		$email->template('participated');
-		$email->viewVars(
-			array(
-				'sem_name' => $seminar['Seminar']['name'],
-				'host' => $seminar['Account']['last_name'] . $seminar['Account']['first_name'],
-				'date' => $seminar['Seminar']['start'],
-				'place' => $seminar['Seminar']['place'],
-				'suspend_dsc' => $seminar['Seminar']['suspend_dsc'],
-			)
-		);
-		$email->send();
-
-
-
-
-
-
-
+		// 中止処理Session削除
+		$this->Session->delete('suspend');
 	}
 }
