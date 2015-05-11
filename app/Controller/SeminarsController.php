@@ -927,7 +927,22 @@ class SeminarsController extends AppController {
 		// 勉強会情報を取得
 		$options = array('conditions' => array('Seminar.' . $this->Seminar->primaryKey => $this->Session->read('participant')['Seminar']['id']));
 		$seminar = $this->Seminar->find('first', $options);
+
+		// ユーザが私も！しているかどうか確認する
+		$isMeToo = false;
+		if(isset($seminar['TeachMe']['id'])) {
+			$options = array('conditions' => array(
+				'MeToo.teach_me_id' => $seminar['TeachMe']['id'],
+				'MeToo.account_id' => $this->Session->read('Auth.id')
+			));
+			$metoo = $this->MeToo->find('first', $options);
+			if(isset($metoo['MeToo']['id'])) {
+				$isMeToo = true;
+			}
+		}
+
 		$this->set('seminar', $seminar);
+		$this->set('isMeToo', $isMeToo);
 
 		//----- モバイルブラウザか判断 -----
 		if ((strpos( env('HTTP_USER_AGENT'), 'Phone')) || (strpos( env('HTTP_USER_AGENT'), 'Android'))) {
