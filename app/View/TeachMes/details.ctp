@@ -31,6 +31,16 @@
 	<div class="detail_contents_top">
 		<h3><?php echo htmlspecialchars($teachme['TeachMe']['title']); ?></h3>
 		<p><?php echo nl2br(htmlspecialchars($teachme['TeachMe']['content'])); ?></p>
+		<?php if(count($seminars) > 0): ?>
+		<div id="teachmeSeminarList">
+			<h5>この内容で作成された勉強会</h5>
+			<ul>
+			<?php foreach($seminars as $seminar): ?>
+				<li><?php echo $this->Html->link(h($seminar['Seminar']['name']), array('controller' => 'Seminars', 'action' => 'details', '?' => array('id' => $seminar['Seminar']['id'])), array('escape' => false)); ?></li><br>
+			<?php endforeach; ?>
+			</ul>
+		</div>
+		<?php endif; ?>
 	</div>
 	<div class="detail_contents_bottom cf">
 		<div class="metoo_num">
