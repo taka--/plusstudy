@@ -48,6 +48,16 @@
 			<article>
 			<h4>詳細</h4>
 			<?php echo $seminar['Seminar']['description']; ?>
+			<?php if(count($participants) > 0): ?>
+			<div id="partList">
+				<h5>参加者リスト</h5>
+				<ul id="partList">
+				<?php foreach($participants as $participant): ?>
+					<li><?php echo $this->Html->link(htmlspecialchars($participant['Account']['last_name']) . ' ' . htmlspecialchars($participant['Account']['first_name']), array('controller' => 'Accounts', 'action' => 'profile', '?' => array('id' => $participant['Account']['id'])), array('escape' => false)); ?></li>
+				<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php endif; ?>
 			</article>
 			<aside>
 			<h4>開催情報</h4>

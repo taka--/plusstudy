@@ -293,6 +293,33 @@ section .wrapper dl dd .btnArea > a:first-child {
 #newSmnConfirm article {
     word-wrap: break-word;
 }
+#newSmnConfirm #partList h5 {
+    font-size: 18px;
+    margin-top: 50px;
+    margin-bottom: 12px;
+}
+#newSmnConfirm #partList li {
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+    *zoom: 1;
+    *display: inline;
+    text-align: center;
+    vertical-align: top;
+    letter-spacing: 0.5px;
+    background: #4cbdce;
+    padding: 2px 10px;
+    margin-right: 6px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+}
+#newSmnConfirm #partList li a {
+    color: #fff;
+    text-decoration: none;
+}
+#newSmnConfirm #partList li a:hover {
+    text-decoration: underline;
+}
 #ButtonDetailsForm {
     padding: 30px 0 0;
 }

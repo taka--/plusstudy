@@ -674,6 +674,10 @@ class SeminarsController extends AppController {
 			}
 		}
 
+		// 参加者リストを取得
+		$options = array('conditions' => array('Participant.seminar_id' => $seminar['Seminar']['id']));
+		$participants = $this->Participant->find('all', $options);
+
 		// エラーメッセージ初期化
 		$eTitle = '';
 		$eContent = '';
@@ -746,6 +750,7 @@ class SeminarsController extends AppController {
 				'eContent' => $eContent,
 				'userType' => $userType,
 				'smnID' => $id,
+				'participants' => $participants,
 				));
 
 
