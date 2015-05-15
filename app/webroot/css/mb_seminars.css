@@ -67,6 +67,47 @@ section .wrapper dl dd .btnArea > a:first-child {
 	margin-left: 0;
 	width: 222px;
 }
+.wrapper {
+	position: relative;
+}
+.teachmetag {
+    position: absolute;
+    margin-left: 0;
+    height: 46px;
+    top: -80px;
+    left: -32px;
+}
+.teachmetag img {
+    position: relative;
+    float: left;
+    z-index: 2;
+}
+.teachmetag h4, .teachmetag h5 {
+    position: relative;
+    margin-top: 2px;
+    line-height: 16px;
+    margin-left: -10px;
+    padding: 2px 7px 0 12px;
+    float: left;
+    background: #fd865b;
+    border: 1px #fff solid;
+    color: #fff;
+    font-size: 9px;
+    font-weight: normal;
+    z-index: 1;
+    border-radius: 0.4em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 160px;
+}
+.teachmetag a {
+    color: #fff;
+    text-decoration: none;
+}
+.teachmetag a:hover {
+    text-decoration: underline;
+}
 .newSmnInputCover img {
 	padding-bottom: 20px;
 	max-width: 400px;
@@ -200,6 +241,10 @@ section .wrapper dl dd .btnArea > a:first-child {
 	top: 50px;
 	right: 30px;
 }
+#newSmnConfirm #prof a {
+	color: #656565;
+	text-decoration: none;
+}
 #newSmnConfirm article {
 	width: 100%;
 	margin: 0;
@@ -214,6 +259,33 @@ section .wrapper dl dd .btnArea > a:first-child {
 	text-align: center;
 	width: 80%;
 	margin: 0 auto;
+}
+#newSmnConfirm #partList h5 {
+    font-size: 12px;
+    margin-top: 50px;
+    margin-bottom: 6px;
+}
+#newSmnConfirm #partList li {
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    *zoom: 1;
+    *display: inline;
+    text-align: center;
+    vertical-align: top;
+    letter-spacing: 0.5px;
+    background: #4cbdce;
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+}
+#newSmnConfirm #partList li a {
+    color: #fff;
+    text-decoration: none;
+}
+#newSmnConfirm #partList li a:hover {
+    text-decoration: underline;
 }
 #newSmnConfirm #date {
 	color: #fff;

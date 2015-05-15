@@ -223,7 +223,9 @@ class TeachMesController extends AppController {
 		// タグ付けされた勉強会を取得する
 		$options = array(
 			'conditions' => array(
-				'Seminar.teach_me_id' => $id));
+				'Seminar.teach_me_id' => $id,
+				'Seminar.reservation_limit >' => date('Y-m-d H:i:s', strtotime('now')),
+				'Seminar.suspended' => 0));
 		$seminars = $this->Seminar->find('all', $options);
 		$this->set('seminars', $seminars);
 

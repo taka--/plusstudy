@@ -37,12 +37,36 @@
 				}
 			?>
 			</div>
-			<p><?php echo 'with ' . h($seminar['Account']['last_name']) . ' ' . h($seminar['Account']['first_name']) ?></p>
+			<p><?php echo 'with ' . $this->Html->link(htmlspecialchars($seminar['Account']['last_name']) . ' ' . htmlspecialchars($seminar['Account']['first_name']), array('controller' => 'Accounts', 'action' => 'profile', '?' => array('id' => $seminar['Account']['id'])), array('escape' => false)); ?></p>
 		</div>
 		<h3><?php echo h($seminar['Seminar']['name']); ?></h3>
 		<div class="cf">
+			<?php if(isset($seminar['TeachMe']['title'])): ?>
+			<div class="wrapper" style="top:0px;">
+				<div class="teachmetag cf">
+					<img src="<?php echo IMG_PATH; ?>tag_ico.png" width="18" height="28" alt="">
+					<h5>
+						<?php echo $this->Html->link($seminar['TeachMe']['title'], array(
+							'controller' => 'TeachMes' ,
+							'action' => 'details',
+							'?' => array('id' => $seminar['TeachMe']['id'])
+							)); ?>
+					</h5>
+				</div>
+			</div>
+			<?php endif; ?>
 			<article>
 				<?php echo $seminar['Seminar']['description'] ?>
+				<?php if(count($participants) > 0): ?>
+				<div id="partList">
+					<h5>参加者リスト</h5>
+					<ul>
+					<?php foreach($participants as $participant): ?>
+						<li><?php echo $this->Html->link(htmlspecialchars($participant['Account']['last_name']) . ' ' . htmlspecialchars($participant['Account']['first_name']), array('controller' => 'Accounts', 'action' => 'profile', '?' => array('id' => $participant['Account']['id'])), array('escape' => false)); ?></li>
+					<?php endforeach; ?>
+					</ul>
+				</div>
+				<?php endif; ?>
 			</article>
 		</div>
 	</div>
