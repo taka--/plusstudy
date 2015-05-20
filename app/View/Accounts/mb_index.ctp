@@ -11,6 +11,8 @@
 		<?php echo $this->Form->button('', array('type' => 'submit', 'class' => 'loginBtn')); ?>
 	<?php echo $this->Form->end(); ?>
 
-	<a href="#" id="noLogin">ログインできない方はこちら</a>
+	<!--<a href="#" id="noLogin">ログインできない方はこちら</a>-->
+	<p id="noLogin" style="line-height:20px;">次の機能はモバイル版ではご利用頂けません。<br>
+	新規アカウント登録・プロフィールの編集<br>勉強会の作成・編集</p>
 </div>
 
