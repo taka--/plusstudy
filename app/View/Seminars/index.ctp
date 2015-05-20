@@ -86,7 +86,7 @@
 			<dt>開催場所</dt>
 			<dd><?php echo $this->Form->text('Seminar.place', array('class' => 'text')); ?></dd>
 			<dd class="errMsg"><?php echo $ePlace; ?></dd>
-			<dt>参加人数上限</dt>
+			<dt>参加人数上限（0で制限なし）</dt>
 			<dd>
 				<?php echo $this->Form->text('Seminar.upper_limit', array(
 					'default' => 0,

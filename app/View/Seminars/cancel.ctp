@@ -31,8 +31,12 @@
 				<dd><?php echo $seminar['Seminar']['place'] ?></dd>
 
 				<dt>参加人数 / 募集人数</dt>
-				<dd><?php echo count($seminar['Participant']) . '人 / ' . $seminar['Seminar']['upper_limit'] . '人';?></dd>
-
+				<dd><?php
+					if($seminar['Seminar']['upper_limit'] > 0) {
+						echo count($seminar['Participant']) . '人 / ' . $seminar['Seminar']['upper_limit'] . '人';
+					} else {
+						echo count($seminar['Participant']) . '人 / ' . "制限なし";
+					}?></dd>
 				<dt>予約締め切り日時</dt>
 				<dd>
 					<?php

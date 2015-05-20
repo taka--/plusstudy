@@ -115,7 +115,7 @@
 				else {
 					switch ($userType) {
 						case 'NoJoin':
-							if(count($participants) >= $seminar['Seminar']['upper_limit'] ||
+							if(($seminar['Seminar']['upper_limit'] > 0 && count($participants) >= $seminar['Seminar']['upper_limit']) ||
 							   time() > strtoTime($seminar['Seminar']['reservation_limit'])) {
 								echo "<p style='color:#cc0000'>現在、この勉強会は<br>参加を受け付けていません</p>";
 							}
