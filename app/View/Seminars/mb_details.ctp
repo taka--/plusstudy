@@ -57,16 +57,16 @@
 			<?php endif; ?>
 			<article>
 				<?php echo $seminar['Seminar']['description'] ?>
-				<?php if(count($participants) > 0): ?>
+				<?php //if(count($participants) > 0): ?>
 				<div id="partList">
-					<h5>参加者リスト</h5>
+					<h5>参加者(<?php echo count($participants); ?>人)</h5>
 					<ul>
 					<?php foreach($participants as $participant): ?>
 						<li><?php echo $this->Html->link(htmlspecialchars($participant['Account']['last_name']) . ' ' . htmlspecialchars($participant['Account']['first_name']), array('controller' => 'Accounts', 'action' => 'profile', '?' => array('id' => $participant['Account']['id'])), array('escape' => false)); ?></li>
 					<?php endforeach; ?>
 					</ul>
 				</div>
-				<?php endif; ?>
+				<?php //endif; ?>
 			</article>
 		</div>
 	</div>
@@ -114,23 +114,37 @@
 				<?php echo $this->Form->create('Button'); ?>
 				<?php
 
-				switch ($userType) {
-					case 'NoJoin':
-						echo $this->Html->link($this->HTML->image('participates_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
-						echo $this->Form->input('join', array('type' => 'hidden', 'value' => 'join'));
-						break;
+				if(time() > strtoTime($seminar['Seminar']['end'])) {
+					echo "<p style='color:#cc0000'>この勉強会は終了しました<p>";
+					if($seminar['Seminar']['gj'] > 0) {
+						echo "<dd style='font-size:12px;'>" . $seminar['Seminar']['gj'] . "人の参加者が良かった！と言っています</dd>";
+					}
+				}
+				else {
+					switch ($userType) {
+						case 'NoJoin':
+							if(count($participants) >= $seminar['Seminar']['upper_limit'] ||
+							   time() > strtoTime($seminar['Seminar']['reservation_limit'])) {
+								echo "<p style='color:#cc0000'>現在、この勉強会は<br>参加を受け付けていません</p>";
+							}
+							else {
+								echo $this->Html->link($this->HTML->image('participates_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
+								echo $this->Form->input('join', array('type' => 'hidden', 'value' => 'join'));
+							}
+							break;
 
-					case 'Join':
-						echo $this->Html->link($this->HTML->image('pcansel_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
-						echo $this->Form->input('cancel', array('type' => 'hidden', 'value' => 'cancel'));
-						break;
+						case 'Join':
+							echo $this->Html->link($this->HTML->image('pcansel_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
+							echo $this->Form->input('cancel', array('type' => 'hidden', 'value' => 'cancel'));
+							break;
 
-					case 'Manager':
-						break;
+						case 'Manager':
+							break;
 
-					default:
-						exit('エラー');
-						break;
+						default:
+							exit('エラー');
+							break;
+					}
 				}
 
 				?>
