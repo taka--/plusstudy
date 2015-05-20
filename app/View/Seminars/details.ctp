@@ -48,16 +48,16 @@
 			<article>
 			<h4>詳細</h4>
 			<?php echo $seminar['Seminar']['description']; ?>
-			<?php if(count($participants) > 0): ?>
+			<?php //if(count($participants) > 0): ?>
 			<div id="partList">
-				<h5>参加者リスト</h5>
+				<h5>参加者リスト(<?php echo count($participants); ?>人)</h5>
 				<ul>
 				<?php foreach($participants as $participant): ?>
 					<li><?php echo $this->Html->link(htmlspecialchars($participant['Account']['last_name']) . ' ' . htmlspecialchars($participant['Account']['first_name']), array('controller' => 'Accounts', 'action' => 'profile', '?' => array('id' => $participant['Account']['id'])), array('escape' => false)); ?></li>
 				<?php endforeach; ?>
 				</ul>
 			</div>
-			<?php endif; ?>
+			<?php //endif; ?>
 			</article>
 			<aside>
 			<h4>開催情報</h4>
@@ -108,8 +108,13 @@
 
 				switch ($userType) {
 					case 'NoJoin':
-						echo $this->Html->link($this->HTML->image('participates_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
-						echo $this->Form->input('join', array('type' => 'hidden', 'value' => 'join'));
+						if(count($participants) >= $seminar['Seminar']['upper_limit']) {
+							echo "<p style='color:#cc0000'>現在、この勉強会は<br>参加を受け付けていません</p>";
+						}
+						else {
+							echo $this->Html->link($this->HTML->image('participates_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
+							echo $this->Form->input('join', array('type' => 'hidden', 'value' => 'join'));
+						}
 						break;
 
 					case 'Join':
