@@ -112,6 +112,9 @@
 						echo "<dd style='font-size:18px'>" . $seminar['Seminar']['gj'] . "人の参加者が<br>良かった！と言っています</dd>";
 					}
 				}
+				else if($seminar['Seminar']['suspended'] != 0) {
+					echo "<p style='color:#cc0000'>この勉強会は中止されました<p>";
+				}
 				else {
 					switch ($userType) {
 						case 'NoJoin':
