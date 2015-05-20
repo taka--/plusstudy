@@ -197,9 +197,9 @@ section .wrapper dl dd .btnArea > a:first-child {
 	width: 100%;
 }
 #newSmnConfirm h3 {
-	font-size: 18px;
+	font-size: 14px;
 	border-bottom: 1px solid #cec6c3;
-	margin: 0 30px;
+	margin: 0 25px;
 	padding: 23px 0;
 }
 #newSmnConfirm h4 {
@@ -214,7 +214,7 @@ section .wrapper dl dd .btnArea > a:first-child {
 	width: 100%;
 }
 #newSmnConfirm .cf {
-	margin: 0 30px;
+	margin: 0 25px;
 }
 #newSmnConfirm #prof {
 	width: 100%;

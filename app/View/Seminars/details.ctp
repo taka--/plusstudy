@@ -28,11 +28,8 @@
 						<?php echo '<img src="' . SMN_IMG_PATH . $seminar['Seminar']['seminar_image_id'] . $seminar['SeminarImage']['ext'] . '" alt="">'; ?>
 			<?php } ?>
 			</div>
-
-		<h3><?php echo h($seminar['Seminar']['name']); ?></h3>
-		<div class="cf">
 			<?php if(isset($seminar['TeachMe']['title'])): ?>
-			<div class="wrapper" style="top:-365px;">
+			<div class="wrapper" style="top:-228px;">
 				<div class="teachmetag cf">
 					<img src="<?php echo IMG_PATH; ?>tag_ico.png" alt="">
 					<h5>
@@ -45,6 +42,9 @@
 				</div>
 			</div>
 			<?php endif; ?>
+
+		<h3><?php echo h($seminar['Seminar']['name']); ?></h3>
+		<div class="cf">
 			<article>
 			<h4>詳細</h4>
 			<?php echo $seminar['Seminar']['description']; ?>

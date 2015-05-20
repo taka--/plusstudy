@@ -27,6 +27,20 @@
 						<?php echo '<img src="' . SMN_IMG_PATH . $seminar['Seminar']['seminar_image_id'] . $seminar['SeminarImage']['ext'] . '" alt="">'; ?>
 			</div>
 		<?php } ?>
+		<?php if(isset($seminar['TeachMe']['title'])): ?>
+		<div class="wrapper" style="margin: 0 25px; top:70px;">
+			<div class="teachmetag cf">
+				<img src="<?php echo IMG_PATH; ?>tag_ico.png" width="18" height="28" alt="">
+				<h5>
+					<?php echo $this->Html->link($seminar['TeachMe']['title'], array(
+						'controller' => 'TeachMes' ,
+						'action' => 'details',
+						'?' => array('id' => $seminar['TeachMe']['id'])
+						)); ?>
+				</h5>
+			</div>
+		</div>
+		<?php endif; ?>
 		<div id="prof">
 			<div class="profImg">
 			<?php
@@ -41,20 +55,6 @@
 		</div>
 		<h3><?php echo h($seminar['Seminar']['name']); ?></h3>
 		<div class="cf">
-			<?php if(isset($seminar['TeachMe']['title'])): ?>
-			<div class="wrapper" style="top:0px;">
-				<div class="teachmetag cf">
-					<img src="<?php echo IMG_PATH; ?>tag_ico.png" width="18" height="28" alt="">
-					<h5>
-						<?php echo $this->Html->link($seminar['TeachMe']['title'], array(
-							'controller' => 'TeachMes' ,
-							'action' => 'details',
-							'?' => array('id' => $seminar['TeachMe']['id'])
-							)); ?>
-					</h5>
-				</div>
-			</div>
-			<?php endif; ?>
 			<article>
 				<?php echo $seminar['Seminar']['description'] ?>
 				<?php //if(count($participants) > 0): ?>
