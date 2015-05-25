@@ -17,6 +17,6 @@
 		</div>
 	<?php echo $this->Form->end(); ?>
 
-	<a href="#" id="noLogin"><img class="ar" src="<?php echo IMG_PATH . 'ar.png'; ?>" alt="▶">ログインできない方はこちら</a>
+	<!--<a href="#" id="noLogin"><img class="ar" src="<?php echo IMG_PATH . 'ar.png'; ?>" alt="▶">ログインできない方はこちら</a>-->
 </div>
 
