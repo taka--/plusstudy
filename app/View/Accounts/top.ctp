@@ -118,7 +118,14 @@
 						</li>
 						<li>
 							<h4>募集人数</h4>
-							<p><?php echo $seminar['Seminar']['upper_limit']; ?></p>
+							<p><?php
+							if($seminar['Seminar']['upper_limit'] == 0) {
+								echo "∞";
+							}
+							else {
+								echo $seminar['Seminar']['upper_limit'];
+							}
+							?></p>
 						</li>
 						<li>
 							<h4>募集締切</h4>

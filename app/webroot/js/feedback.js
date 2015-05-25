@@ -6,7 +6,7 @@ $(function () {
 		e.preventDefault();
 
 		// ajax通信
-		$.post('/plusstudy/Seminars/gj', {
+		$.post(WEB_ROOT + 'Seminars/gj', {
 				seminar_id: $('input#seminar_id').val()
 			}, function(res) {
 				if(res.result == true) {
@@ -29,7 +29,7 @@ $(function () {
 		e.preventDefault();
 
 		// ajax通信
-		$.post('/plusstudy/Seminars/resolve', {
+		$.post(WEB_ROOT + 'Seminars/resolve', {
 				teach_me_id: $('input#teach_me_id').val()
 			}, function(res) {
 				if(res.result == true) {

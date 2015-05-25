@@ -129,7 +129,14 @@
 						<div class="cf">
 							<dl class="patiNumPeo cf">
 								<dt>参加人数</dt>
-								<dd><?php echo count($seminar['Participant']); ?>/<?php echo $seminar['Seminar']['upper_limit']; ?></dd>
+								<dd><?php echo count($seminar['Participant']); ?>/<?php
+								if($seminar['Seminar']['upper_limit'] == 0) {
+									echo "∞";
+								}
+								else {
+									echo $seminar['Seminar']['upper_limit'];
+								}
+								?></dd>
 							</dl>
 							<dl class="deadLine cf">
 								<dt>募集締切</dt>
@@ -204,7 +211,14 @@
 						<div class="cf">
 							<dl class="patiNumPeo cf">
 								<dt>参加人数</dt>
-								<dd><?php echo count($seminar['Participant']); ?>/<?php echo $seminar['Seminar']['upper_limit']; ?></dd>
+								<dd><?php echo count($seminar['Participant']); ?>/<?php
+								if($seminar['Seminar']['upper_limit'] == 0) {
+									echo "∞";
+								}
+								else {
+									echo $seminar['Seminar']['upper_limit'];
+								}
+								?></dd>
 							</dl>
 							<dl class="deadLine cf">
 								<dt>募集締切</dt>

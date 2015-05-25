@@ -77,7 +77,7 @@ class SeminarsController extends AppController {
 
 		$time = '';						// 一時的な時間変数
 
-
+		$teachme = null;
 
 
 
@@ -133,8 +133,8 @@ class SeminarsController extends AppController {
 			if ($upperLimit === '') {
 				$eUpperLimit = '何も入力されていません';
 				$validateResult = false;
-			} else if (!preg_match('/^([1-9][0-9]*)$/', $upperLimit)) {
-				$eUpperLimit = '1 以上の半角数字で入力してください';
+			} else if (!preg_match('/^(0|[1-9][0-9]*)$/', $upperLimit)) {
+				$eUpperLimit = '半角数字で入力してください';
 				$validateResult = false;
 			} else {
 				//--- 現在の参加人数より下に設定できなくする ---
@@ -144,7 +144,7 @@ class SeminarsController extends AppController {
 							),
 					);
 				$currentJoinerNum = $this->Participant->find('count', $param);
-				if ($upperLimit < $currentJoinerNum) {
+				if ($upperLimit > 0 && $upperLimit < $currentJoinerNum) {
 					$eUpperLimit = '現在の参加人数 ' . $currentJoinerNum . '人 より少なく設定できません';
 					$validateResult = false;
 				}
@@ -218,12 +218,18 @@ class SeminarsController extends AppController {
 			$this->request->data['Seminar']['upper_limit'] = $result['Seminar']['upper_limit'];
 			$this->request->data['Seminar']['place'];
 			$this->request->data['Seminar']['description'] = $result['Seminar']['description'];
+			$this->request->data['Seminar']['teach_me_id'] = $result['Seminar']['teach_me_id'];
 			$smnImgId = $result['Seminar']['seminar_image_id'];
 			$smnImgExt = $result['SeminarImage']['ext'];
 
 			// 説明文
 			$dsc = $result['Seminar']['description'];
 
+			// 指定されたIDを元にニーズ情報を取得
+			if(isset($this->request->data['Seminar']['teach_me_id'])) {
+				$options = array('conditions' => array('TeachMe.' . $this->TeachMe->primaryKey => $result['Seminar']['teach_me_id']));
+				$teachme = $this->TeachMe->find('first', $options);
+			}
 		}
 
 
@@ -274,6 +280,7 @@ class SeminarsController extends AppController {
 				'smnImgExt' => $smnImgExt,
 				'accId' => $this->Session->read('Auth.id'),
 				'smnId' => $seminar_id,
+				'teachme' => $teachme
 			));
 	}
 
@@ -667,6 +674,10 @@ class SeminarsController extends AppController {
 			}
 		}
 
+		// 参加者リストを取得
+		$options = array('conditions' => array('Participant.seminar_id' => $seminar['Seminar']['id']));
+		$participants = $this->Participant->find('all', $options);
+
 		// エラーメッセージ初期化
 		$eTitle = '';
 		$eContent = '';
@@ -739,6 +750,7 @@ class SeminarsController extends AppController {
 				'eContent' => $eContent,
 				'userType' => $userType,
 				'smnID' => $id,
+				'participants' => $participants,
 				));
 
 
@@ -920,7 +932,22 @@ class SeminarsController extends AppController {
 		// 勉強会情報を取得
 		$options = array('conditions' => array('Seminar.' . $this->Seminar->primaryKey => $this->Session->read('participant')['Seminar']['id']));
 		$seminar = $this->Seminar->find('first', $options);
+
+		// ユーザが私も！しているかどうか確認する
+		$isMeToo = false;
+		if(isset($seminar['TeachMe']['id'])) {
+			$options = array('conditions' => array(
+				'MeToo.teach_me_id' => $seminar['TeachMe']['id'],
+				'MeToo.account_id' => $this->Session->read('Auth.id')
+			));
+			$metoo = $this->MeToo->find('first', $options);
+			if(isset($metoo['MeToo']['id'])) {
+				$isMeToo = true;
+			}
+		}
+
 		$this->set('seminar', $seminar);
+		$this->set('isMeToo', $isMeToo);
 
 		//----- モバイルブラウザか判断 -----
 		if ((strpos( env('HTTP_USER_AGENT'), 'Phone')) || (strpos( env('HTTP_USER_AGENT'), 'Android'))) {

@@ -14,6 +14,9 @@
 </article>
 
 <div class="doCenter">
-	<?php echo $this->Html->image(MB_IMG_PATH . 'hrefneedsdetails_btn.png', array("alt" => "登録した教えて欲しいこと詳細へ", "class" => "hrefneedsdetailsBtn", 'url' => array('controller' => 'Accounts', 'action' => 'index'))); ?>
+
+	<?php //echo $this->Html->image(MB_IMG_PATH . 'hrefneedsdetails_btn.png', array("alt" => "登録した教えて欲しいこと詳細へ", "class" => "hrefneedsdetailsBtn", 'url' => array('controller' => 'Accounts', 'action' => 'index'))); ?>
+	<div style="padding-top: 10px;">
 	<?php echo $this->Html->image(MB_IMG_PATH . 'backtop_btn.png', array("alt" => "トップへ戻る", "class" => "backtopBtn", 'url' => array('controller' => 'Accounts', 'action' => 'index'))); ?>
+	</div>
 </div>

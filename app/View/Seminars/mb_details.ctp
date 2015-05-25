@@ -27,6 +27,20 @@
 						<?php echo '<img src="' . SMN_IMG_PATH . $seminar['Seminar']['seminar_image_id'] . $seminar['SeminarImage']['ext'] . '" alt="">'; ?>
 			</div>
 		<?php } ?>
+		<?php if(isset($seminar['TeachMe']['title'])): ?>
+		<div class="wrapper" style="margin: 0 25px; top:70px;">
+			<div class="teachmetag cf">
+				<img src="<?php echo IMG_PATH; ?>tag_ico.png" width="18" height="28" alt="">
+				<h5>
+					<?php echo $this->Html->link($seminar['TeachMe']['title'], array(
+						'controller' => 'TeachMes' ,
+						'action' => 'details',
+						'?' => array('id' => $seminar['TeachMe']['id'])
+						)); ?>
+				</h5>
+			</div>
+		</div>
+		<?php endif; ?>
 		<div id="prof">
 			<div class="profImg">
 			<?php
@@ -37,12 +51,22 @@
 				}
 			?>
 			</div>
-			<p><?php echo 'with ' . h($seminar['Account']['last_name']) . ' ' . h($seminar['Account']['first_name']) ?></p>
+			<p><?php echo 'with ' . $this->Html->link(htmlspecialchars($seminar['Account']['last_name']) . ' ' . htmlspecialchars($seminar['Account']['first_name']), array('controller' => 'Accounts', 'action' => 'profile', '?' => array('id' => $seminar['Account']['id'])), array('escape' => false)); ?></p>
 		</div>
 		<h3><?php echo h($seminar['Seminar']['name']); ?></h3>
 		<div class="cf">
 			<article>
 				<?php echo $seminar['Seminar']['description'] ?>
+				<?php //if(count($participants) > 0): ?>
+				<div id="partList">
+					<h5>参加者(<?php echo count($participants); ?>人)</h5>
+					<ul>
+					<?php foreach($participants as $participant): ?>
+						<li><?php echo $this->Html->link(htmlspecialchars($participant['Account']['last_name']) . ' ' . htmlspecialchars($participant['Account']['first_name']), array('controller' => 'Accounts', 'action' => 'profile', '?' => array('id' => $participant['Account']['id'])), array('escape' => false)); ?></li>
+					<?php endforeach; ?>
+					</ul>
+				</div>
+				<?php //endif; ?>
 			</article>
 		</div>
 	</div>
@@ -90,23 +114,40 @@
 				<?php echo $this->Form->create('Button'); ?>
 				<?php
 
-				switch ($userType) {
-					case 'NoJoin':
-						echo $this->Html->link($this->HTML->image('participates_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
-						echo $this->Form->input('join', array('type' => 'hidden', 'value' => 'join'));
-						break;
+				if(time() > strtoTime($seminar['Seminar']['end'])) {
+					echo "<p style='color:#cc0000'>この勉強会は終了しました<p>";
+					if($seminar['Seminar']['gj'] > 0) {
+						echo "<dd style='font-size:12px;'>" . $seminar['Seminar']['gj'] . "人の参加者が良かった！と言っています</dd>";
+					}
+				}
+				else if($seminar['Seminar']['suspended'] != 0) {
+					echo "<p style='color:#cc0000'>この勉強会は中止されました<p>";
+				}
+				else {
+					switch ($userType) {
+						case 'NoJoin':
+							if(($seminar['Seminar']['upper_limit'] > 0 && count($participants) >= $seminar['Seminar']['upper_limit']) ||
+							   time() > strtoTime($seminar['Seminar']['reservation_limit'])) {
+								echo "<p style='color:#cc0000'>現在、この勉強会は<br>参加を受け付けていません</p>";
+							}
+							else {
+								echo $this->Html->link($this->HTML->image('participates_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
+								echo $this->Form->input('join', array('type' => 'hidden', 'value' => 'join'));
+							}
+							break;
 
-					case 'Join':
-						echo $this->Html->link($this->HTML->image('pcansel_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
-						echo $this->Form->input('cancel', array('type' => 'hidden', 'value' => 'cancel'));
-						break;
+						case 'Join':
+							echo $this->Html->link($this->HTML->image('pcansel_btn.png', array('width' => '222', 'height' => '54')), array('action' => 'register'), array('escape' => false, 'class' => 'btnSubmitJoinCancelEdit'));
+							echo $this->Form->input('cancel', array('type' => 'hidden', 'value' => 'cancel'));
+							break;
 
-					case 'Manager':
-						break;
+						case 'Manager':
+							break;
 
-					default:
-						exit('エラー');
-						break;
+						default:
+							exit('エラー');
+							break;
+					}
 				}
 
 				?>

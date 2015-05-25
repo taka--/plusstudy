@@ -30,7 +30,7 @@
 
 		<div class="seminarsArea cf">
 			<?php if(count($seminars) === 0): ?>
-				<p class="none"><?php echo '現在予定されている勉強会はありません'; ?></p>
+				<p class="none" style="font-size:15px;"><?php echo '現在予定されている勉強会はありません'; ?></p>
 			<?php endif; ?>
 
 			<?php foreach($seminars as $seminar): ?>
@@ -81,7 +81,14 @@
 						<div class="cf">
 							<dl class="patiNumPeo cf">
 								<dt>参加人数</dt>
-								<dd><?php echo count($seminar['Participant']); ?>/<?php echo $seminar['Seminar']['upper_limit']; ?></dd>
+								<dd><?php echo count($seminar['Participant']); ?>/<?php
+								if($seminar['Seminar']['upper_limit'] == 0) {
+									echo "∞";
+								}
+								else {
+									echo $seminar['Seminar']['upper_limit'];
+								}
+								?></dd>
 							</dl>
 							<dl class="deadLine cf">
 								<dt>募集締切</dt>
@@ -100,7 +107,7 @@
 	<section class="panel">
 		<div class="tabArArea tabR"><?php echo $this->Html->image(MB_IMG_PATH . 'tab_on_ar.png', array("alt" => "タブar")); ?></div>
 		<?php if(count($teachmes) === 0): ?>
-			<p class="none"><?php echo '今求められている勉強会はありません'; ?></p>
+			<p class="none" style="font-size:15px;"><?php echo '今求められている勉強会はありません'; ?></p>
 		<?php endif; ?>
 
 		<ul id="needsArea" class="cf">
